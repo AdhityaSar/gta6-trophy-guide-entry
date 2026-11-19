@@ -83,6 +83,18 @@
       return v !== "0";
     } catch (e) { return true; }
   }
+
+  function parseQuery() {
+    var q = {};
+    var s = window.location.search.replace(/^\?/, "");
+    if (!s) return q;
+    s.split("&").forEach(function (pair) {
+      var i = pair.indexOf("=");
+      if (i < 0) q[decodeURIComponent(pair)] = "";
+      else q[decodeURIComponent(pair.slice(0, i))] = decodeURIComponent(pair.slice(i + 1));
+    });
+    return q;
+  }
   function saveSpoiler() {
     try { localStorage.setItem(SPOILER_KEY, spoilerOn ? "1" : "0"); } catch (e) {}
   }
@@ -110,6 +122,27 @@
   }
 
   // ---- rendering: progress ----
+  function renderAuditStrip() {
+    var withGuide = TROPHIES.filter(function (t) { return t.guide && t.guide.trim().length > 0; }).length;
+    var withSource = TROPHIES.filter(function (t) { return t.sources && t.sources.length > 0; }).length;
+    var dated = TROPHIES.filter(function (t) {
+      return t.sources && t.sources.length > 0 && t.sources.every(function (s) { return s.retrieved; });
+    }).length;
+    var items = [
+      ["Trophies", TROPHIES.length + "/" + TROPHIES.length],
+      ["Guides", withGuide + "/" + TROPHIES.length],
+      ["Cited", withSource + "/" + TROPHIES.length],
+      ["Dated", dated + "/" + TROPHIES.length],
+      ["Missable", TROPHIES.filter(function (t) { return t.missable; }).length],
+      ["Online", TROPHIES.filter(function (t) { return t.kind === "online"; }).length],
+      ["Stages", STAGES.length]
+    ];
+    $("auditStrip").innerHTML = items.map(function (it) {
+      return '<span class="audit-chip"><span class="a-label">' + it[0] +
+        "</span> <span class=\"a-value\">" + it[1] + "</span></span>";
+    }).join('<span class="a-sep">·</span>');
+  }
+
   function renderProgress() {
     var n = earned.size;
     var pct = TROPHIES.length ? Math.round((n / TROPHIES.length) * 100) : 0;
@@ -165,6 +198,12 @@
   }
 
   // ---- rendering: roadmap ----
+  function renderRoadmapSummary() {
+    var miss = TROPHIES.filter(function (t) { return t.missable; }).length;
+    $("roadmapSummary").textContent =
+      TROPHIES.length + " trophies · " + STAGES.length + " stages · " + miss + " missable · ~200 h";
+  }
+
   function renderRoadmap() {
     var out = "";
     STAGES.forEach(function (stage) {
@@ -174,11 +213,12 @@
         var isEarned = earned.has(t.id);
         var hidden = isHidden(t);
         var name = hidden ? "Hidden trophy" : t.name;
-        var flag = t.missable ? '<span class="s-flag">MISSABLE</span>' : "";
-        return '<li data-id="' + esc(t.id) + '">' + gradeChip(t.grade) +
+        var star = (t.missable && !hidden) ? '<span class="s-flag">★</span>' : "";
+        return '<li class="s-row' + (isEarned ? " earned" : "") + '" data-id="' + esc(t.id) + '">' +
+          '<span class="grade-letter grade-' + t.grade + '">' + t.grade.charAt(0).toUpperCase() + "</span>" +
           '<span class="s-name">' + esc(name) + "</span>" +
-          (hidden ? "" : '<span class="s-desc">' + esc(t.description) + "</span>") +
-          flag + "</li>";
+          '<span class="s-kind">' + esc(kindLabel(t.kind)) + "</span>" +
+          star + "</li>";
       }).join("");
       out +=
         '<div class="stage">' +
@@ -236,7 +276,9 @@
       sources =
         '<div class="guide-head">Sources</div><ul class="sources">' +
         t.sources.map(function (s) {
-          return '<li><div>' + esc(s.title) + '</div><div class="s-url">' + esc(s.url) + "</div></li>";
+          return '<li><span class="s-title">' + esc(s.title) + "</span> — " +
+            '<span class="s-url">' + esc(s.url) + "</span>" +
+            '<span class="s-ret">retrieved ' + esc(s.retrieved || "") + "</span></li>";
         }).join("") +
         "</ul>";
     }
@@ -278,8 +320,10 @@
 
   function renderAll() {
     renderProgress();
+    renderAuditStrip();
     renderList();
     renderRoadmap();
+    renderRoadmapSummary();
     renderMissables();
   }
 
@@ -411,8 +455,14 @@
   }
 
   // ---- init ----
+  var q = parseQuery();
+  if (q.spoiler === "0") spoilerOn = false;
+  else if (q.spoiler === "1") spoilerOn = true;
+  if (q.view === "roadmap" || q.view === "missables") view = q.view;
+  var initialTrophy = q.trophy || "";
   $("spoilerToggle").checked = spoilerOn;
   bindEvents();
   renderAll();
-  switchView("list");
+  switchView(view);
+  if (initialTrophy) renderDetail(initialTrophy);
 })();
