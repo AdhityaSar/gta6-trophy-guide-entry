@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA VI — Trophy Guide &amp; Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="top">
+  <div class="hrow">
+    <h1>GTA VI Trophy Guide</h1>
+    <div class="earned">
+      <span id="earnedCount" class="earned-num">0</span>
+      <span class="earned-of">/ 55 earned</span>
+      <div class="bar"><div id="earnedBar" class="bar-fill"></div></div>
+    </div>
+  </div>
+  <div class="hrow grades" id="gradeCounters"></div>
+  <div class="hrow controls">
+    <label class="toggle"><input type="checkbox" id="spoilerToggle" checked> Hide spoilers</label>
+    <button id="exportBtn" class="btn" type="button">Export</button>
+    <button id="importBtn" class="btn" type="button">Import</button>
+    <textarea id="ioBox" class="io" rows="1" spellcheck="false" aria-label="Export / Import JSON"></textarea>
+  </div>
+  <div class="audit" id="auditStrip"></div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-view="list" type="button">Checklist</button>
+  <button class="tab" data-view="roadmap" type="button">Roadmap</button>
+  <button class="tab" data-view="missables" type="button">Missables</button>
+</nav>
+
+<div class="filters">
+  <div class="fg" id="kindFilters">
+    <span class="fl">Kind</span>
+    <button class="chip active" data-kind="all" type="button">All</button>
+    <button class="chip" data-kind="story" type="button">Story</button>
+    <button class="chip" data-kind="missable" type="button">Missable</button>
+    <button class="chip" data-kind="collectible" type="button">Collectibles</button>
+    <button class="chip" data-kind="activity" type="button">Activities</button>
+    <button class="chip" data-kind="online" type="button">Online</button>
+  </div>
+  <div class="fg" id="gradeFilters">
+    <span class="fl">Grade</span>
+    <button class="chip active" data-grade="all" type="button">All</button>
+    <button class="chip" data-grade="platinum" type="button">Platinum</button>
+    <button class="chip" data-grade="gold" type="button">Gold</button>
+    <button class="chip" data-grade="silver" type="button">Silver</button>
+    <button class="chip" data-grade="bronze" type="button">Bronze</button>
+  </div>
+  <div class="shown" id="shownCount"></div>
+</div>
+
+<div class="main">
+  <main id="listPanel" class="panel"></main>
+  <aside id="detailPanel" class="panel detail"></aside>
+</div>
+
+<script src="data/trophies.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
