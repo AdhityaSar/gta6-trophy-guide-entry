@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA VI — Trophy Guide & Tracker</title>
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <h1>GTA VI <span class="accent">Trophy Guide</span></h1>
+    <p class="sub">55 PS5 trophies · offline tracker &amp; roadmap</p>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="big-count"><span id="earned">0</span><span class="dim"> / 55 earned</span></div>
+    <div class="bar"><div class="fill" id="barfill"></div></div>
+    <div class="pct" id="pct">0%</div>
+  </div>
+
+  <div class="grade-counters" id="gradeCounters"></div>
+
+  <div class="tools">
+    <label class="spoiler-toggle" title="Hide story-trophy names and descriptions to avoid plot spoilers">
+      <input type="checkbox" id="spoilerToggle" checked>
+      <span>Hide spoilers</span>
+    </label>
+    <button id="exportBtn" class="btn">Export</button>
+    <button id="importBtn" class="btn">Import</button>
+  </div>
+</header>
+
+<div class="import-panel" id="importPanel" hidden>
+  <p>Paste exported JSON of ticked trophy ids, then press Load.</p>
+  <textarea id="importText" spellcheck="false" placeholder='{"earned":["break-the-bank", ...]}'></textarea>
+  <div class="import-actions">
+    <button id="importLoad" class="btn">Load</button>
+    <button id="importCancel" class="btn">Cancel</button>
+  </div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-view="list">Checklist</button>
+  <button class="tab" data-view="roadmap">Roadmap</button>
+  <button class="tab" data-view="missables">Missables</button>
+</nav>
+
+<div class="filters" id="filters" data-view="list">
+  <div class="filter-group kind-filters" id="kindFilters">
+    <button class="chip active" data-kind="">All</button>
+    <button class="chip" data-kind="story">Story</button>
+    <button class="chip" data-kind="missable">Missable</button>
+    <button class="chip" data-kind="collectible">Collectibles</button>
+    <button class="chip" data-kind="activity">Activities</button>
+    <button class="chip" data-kind="online">Online</button>
+  </div>
+  <div class="filter-group grade-filters" id="gradeFilters">
+    <button class="chip active" data-grade="">Any grade</button>
+    <button class="chip" data-grade="platinum">Platinum</button>
+    <button class="chip" data-grade="gold">Gold</button>
+    <button class="chip" data-grade="silver">Silver</button>
+    <button class="chip" data-grade="bronze">Bronze</button>
+  </div>
+  <div class="listed-count" id="listedCount"></div>
+</div>
+
+<main class="layout">
+  <section class="view active" id="view-list">
+    <ul class="checklist" id="checklist"></ul>
+    <div class="empty" id="empty" hidden>No trophies match these filters.</div>
+  </section>
+
+  <section class="view" id="view-roadmap">
+    <div class="roadmap-intro">
+      <h2>Platinum roadmap</h2>
+      <p>One playthrough, ~200 hours. Nothing toward the platinum is permanently missable except a single Chapter&nbsp;1 meditation, which sits in Stage&nbsp;1 so it can never be left behind.</p>
+    </div>
+    <div class="roadmap" id="roadmap"></div>
+  </section>
+
+  <section class="view" id="view-missables">
+    <div class="missables-intro">
+      <h2>Missables</h2>
+      <p>Every trophy in GTA&nbsp;VI can be earned after the story in free-roam — except one. This is the only trophy that can become permanently unobtainable.</p>
+    </div>
+    <div class="missables" id="missables"></div>
+  </section>
+
+  <aside class="detail" id="detail" aria-live="polite">
+    <div class="detail-placeholder" id="detailPlaceholder">
+      <p>Select a trophy to read its guide.</p>
+    </div>
+    <div class="detail-body" id="detailBody" hidden></div>
+  </aside>
+</main>
+
+<script src="data/trophies.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
