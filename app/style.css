@@ -463,17 +463,39 @@ body {
 }
 .detail-body .sources { list-style: none; margin: 0; padding: 0; }
 .detail-body .sources li {
+  display: block;
   font-family: var(--mono);
   font-size: 10.5px;
   line-height: 1.45;
   color: var(--text-dim);
   padding: 2px 0;
+  margin-bottom: 4px;
   border-bottom: 1px solid var(--border-soft);
-  word-break: break-all;
 }
-.detail-body .sources .s-title { color: var(--text); }
-.detail-body .sources .s-url { color: var(--text-faint); }
-.detail-body .sources .s-ret { color: var(--accent); margin-left: 6px; white-space: nowrap; }
+.detail-body .sources .s-title {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.detail-body .sources .s-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 10.5px;
+}
+.detail-body .sources .s-url {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text-faint);
+}
+.detail-body .sources .s-ret {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--accent);
+}
 
 .detail-tick {
   margin-top: 12px;

@@ -276,9 +276,9 @@
       sources =
         '<div class="guide-head">Sources</div><ul class="sources">' +
         t.sources.map(function (s) {
-          return '<li><span class="s-title">' + esc(s.title) + "</span> — " +
-            '<span class="s-url">' + esc(s.url) + "</span>" +
-            '<span class="s-ret">retrieved ' + esc(s.retrieved || "") + "</span></li>";
+          return '<li><span class="s-title">' + esc(s.title) + "</span>" +
+            '<span class="s-meta"><span class="s-url">' + esc(s.url) + "</span>" +
+            '<span class="s-ret">retrieved ' + esc(s.retrieved || "") + "</span></span></li>";
         }).join("") +
         "</ul>";
     }
