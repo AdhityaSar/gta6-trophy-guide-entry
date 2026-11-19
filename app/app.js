@@ -156,7 +156,7 @@
         '<li class="' + cls + '" data-id="' + esc(t.id) + '">' +
           gradeChip(t.grade) +
           '<div class="t-main"><div class="t-name">' + esc(name) + missFlag + "</div>" + descHtml + "</div>" +
-          '<div class="t-check' + (isEarned ? " earned" : "") + '" data-id="' + esc(t.id) + '" title="Toggle earned"></div>' +
+          '<input type="checkbox" class="t-check"' + (isEarned ? " checked" : "") + ' data-id="' + esc(t.id) + '" title="Toggle earned" aria-label="Toggle ' + esc(name) + '">' +
         "</li>";
     });
     ul.innerHTML = out;

@@ -265,21 +265,27 @@ body {
   border: 2px solid var(--text-faint);
   background: var(--bg);
   cursor: pointer;
-  display: flex;
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  position: relative;
   transition: background 0.12s, border-color 0.12s;
+  margin: 0;
 }
-.t-check.earned { background: var(--green); border-color: var(--green); }
-.t-check.earned::after {
+.t-check:hover { border-color: var(--green); }
+.t-check:checked { background: var(--green); border-color: var(--green); }
+.t-check:checked::after {
   content: "";
+  position: absolute;
   width: 10px; height: 6px;
   border-left: 2px solid #07250f;
   border-bottom: 2px solid #07250f;
-  transform: rotate(-45deg) translate(1px, -1px);
+  transform: rotate(-45deg) translate(0, -1px);
+  top: 4px; left: 4px;
 }
-.checklist li.earned .t-check { background: var(--green); border-color: var(--green); }
 
 .empty {
   padding: 40px;
