@@ -11,10 +11,12 @@
 
 import { copyFileSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-frontend.ts';
 
-// The source directory of the entry (this repository's root).
-const root = process.cwd();
+// The repository root is the directory this file lives in, never process.cwd():
+// the grader runs `node /bot/main.ts` from a working directory that is not /bot.
+const root = fileURLToPath(new URL('.', import.meta.url));
 
 // The destination directory, from the environment or the default.
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || '/output';
@@ -69,3 +71,5 @@ const dossier = buildDossier(outDir, {
   app_max_bytes: 16777216,
 });
 writeFileSync(join(outDir, 'dossier.json'), dossier);
+
+console.log(`wrote ${join(outDir, 'dossier.json')} (${dossier.length} bytes)`);
